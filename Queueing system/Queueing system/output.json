@@ -1,0 +1,113 @@
+[
+{
+  "sources": [
+    {
+      "id": 0,
+      "total_requests": 49926,
+      "probability_of_refusal": 0.865180,
+      "mean_time_in_system": 1.700812,
+      "mean_time_in_buffer": 0.202533,
+      "mean_time_of_processing": 1.498280,
+      "dispersion_time_in_buffer": 0.005818,
+      "dispersion_processing_time": 0.084737
+    },
+    {
+      "id": 1,
+      "total_requests": 50072,
+      "probability_of_refusal": 0.866193,
+      "mean_time_in_system": 1.699874,
+      "mean_time_in_buffer": 0.198070,
+      "mean_time_of_processing": 1.501804,
+      "dispersion_time_in_buffer": 0.005330,
+      "dispersion_processing_time": 0.082923
+    },
+    {
+      "id": 2,
+      "total_requests": 50354,
+      "probability_of_refusal": 0.865909,
+      "mean_time_in_system": 1.705450,
+      "mean_time_in_buffer": 0.198675,
+      "mean_time_of_processing": 1.506775,
+      "dispersion_time_in_buffer": 0.005284,
+      "dispersion_processing_time": 0.083364
+    },
+    {
+      "id": 3,
+      "total_requests": 50510,
+      "probability_of_refusal": 0.867610,
+      "mean_time_in_system": 1.698656,
+      "mean_time_in_buffer": 0.201580,
+      "mean_time_of_processing": 1.497076,
+      "dispersion_time_in_buffer": 0.005453,
+      "dispersion_processing_time": 0.082935
+    },
+    {
+      "id": 4,
+      "total_requests": 49754,
+      "probability_of_refusal": 0.867649,
+      "mean_time_in_system": 1.696701,
+      "mean_time_in_buffer": 0.197711,
+      "mean_time_of_processing": 1.498990,
+      "dispersion_time_in_buffer": 0.005284,
+      "dispersion_processing_time": 0.083890
+    },
+    {
+      "id": 5,
+      "total_requests": 50026,
+      "probability_of_refusal": 0.869268,
+      "mean_time_in_system": 1.700962,
+      "mean_time_in_buffer": 0.200424,
+      "mean_time_of_processing": 1.500538,
+      "dispersion_time_in_buffer": 0.005364,
+      "dispersion_processing_time": 0.082133
+    },
+    {
+      "id": 6,
+      "total_requests": 49646,
+      "probability_of_refusal": 0.865327,
+      "mean_time_in_system": 1.705305,
+      "mean_time_in_buffer": 0.201114,
+      "mean_time_of_processing": 1.504191,
+      "dispersion_time_in_buffer": 0.005470,
+      "dispersion_processing_time": 0.082829
+    },
+    {
+      "id": 7,
+      "total_requests": 49837,
+      "probability_of_refusal": 0.867488,
+      "mean_time_in_system": 1.706704,
+      "mean_time_in_buffer": 0.204124,
+      "mean_time_of_processing": 1.502580,
+      "dispersion_time_in_buffer": 0.005552,
+      "dispersion_processing_time": 0.082739
+    },
+    {
+      "id": 8,
+      "total_requests": 49752,
+      "probability_of_refusal": 0.866196,
+      "mean_time_in_system": 1.703763,
+      "mean_time_in_buffer": 0.196748,
+      "mean_time_of_processing": 1.507015,
+      "dispersion_time_in_buffer": 0.005081,
+      "dispersion_processing_time": 0.082053
+    },
+    {
+      "id": 9,
+      "total_requests": 50172,
+      "probability_of_refusal": 0.867436,
+      "mean_time_in_system": 1.703264,
+      "mean_time_in_buffer": 0.203492,
+      "mean_time_of_processing": 1.499771,
+      "dispersion_time_in_buffer": 0.005693,
+      "dispersion_processing_time": 0.084880
+    }
+  ],
+  "handlers": [
+    {
+      "id": 0,
+      "utilization_rate": 1.000000
+    }
+  ],
+  "buffer_size" : 3
+}
+]

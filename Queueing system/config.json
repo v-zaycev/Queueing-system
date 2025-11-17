@@ -1,0 +1,26 @@
+{
+    "path_exe" : "./x64/Release/Queueing system.exe",
+    "path_output" : "results.json",
+    "default_params" : {
+        "sources" : 50,
+        "sources_lambda" : 1.0,
+        "hadlers" : 1,
+        "handling_min" : 0.35,
+        "handling_max" : 0.5,
+        "buffer_size" : 5,
+        "modelling_time" : 10000.0
+    },
+    "vars" :    [
+        {
+            "var_param" :  3,
+            "var_min" : 1,
+            "var_max" : 25
+        },
+        {
+            "var_param" :  2,
+            "var_min" : 1,
+            "var_max" : 10
+        }
+    
+    ]
+}

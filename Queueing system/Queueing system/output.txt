@@ -1,0 +1,33 @@
+Source: 0
+Total requests: 50193
+Probability of refusal: 0.162413
+Mean time in system: 2.4378
+Mean time in buffer: 0.937246
+Mean time of processing: 1.50056
+Disp of time in buffer: 2.05281
+Disp of processing time: 0.0835264
+
+Source: 1
+Total requests: 49939
+Probability of refusal: 0.166443
+Mean time in system: 2.41773
+Mean time in buffer: 0.917035
+Mean time of processing: 1.5007
+Disp of time in buffer: 1.99632
+Disp of processing time: 0.0832125
+
+Source: 2
+Total requests: 49824
+Probability of refusal: 0.160605
+Mean time in system: 2.42203
+Mean time in buffer: 0.921464
+Mean time of processing: 1.50057
+Disp of time in buffer: 2.02065
+Disp of processing time: 0.0831265
+
+Handler: 0
+Utilization rate: 0.951227
+
+Handler: 1
+Utilization rate: 0.931901
+
