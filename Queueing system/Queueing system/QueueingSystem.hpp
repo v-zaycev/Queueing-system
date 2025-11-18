@@ -43,6 +43,32 @@ struct SystemParams
   }
 };
 
+struct SystemState
+{
+    Event_t event;
+    double current_time;
+    std::vector<std::pair<size_t, double>> buffer;
+    std::vector<double> sources;
+    std::vector<std::pair<size_t, double>> handlers;
+};
+
+struct SourceStats {
+    size_t total_requests;
+    double probability_of_refusal;
+    double mean_time_in_system;
+    double mean_time_in_buffer;
+    double mean_time_of_processing;
+    double dispersion_time_in_buffer;
+    double dispersion_processing_time;
+};
+
+struct SystemResult
+{
+    std::vector<SourceStats> sources;
+    std::vector<double> handlers;
+    size_t buffer_size;
+};
+
 class QueueingSystem
 {
 public:
@@ -53,7 +79,10 @@ public:
       delete i;
   }
   void autoModeling();
-  void stepByStepModeling();
+  void init();
+  bool nextEvent();
+  SystemState getState();
+  SystemResult getResult();
   void print_state();
   void print_stats(std::ostream& out);
   std::ofstream& print_stats_json(std::ofstream& out);
@@ -67,7 +96,6 @@ private:
   std::vector<Request*> finished_requests;
   double modeling_end_time;
 
-  bool nextEvent();
   void printRequest(const Request* request);
 };
 

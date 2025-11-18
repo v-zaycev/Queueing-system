@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include<iomanip>
+#include<stdexcept>
 
 QueueingSystem::QueueingSystem(SystemParams params) :
   poisson_generator(params.lambda),
@@ -43,7 +44,7 @@ void QueueingSystem::autoModeling()
 
 }
 
-void QueueingSystem::stepByStepModeling()
+void QueueingSystem::init()
 {
   std::cout << "Step by step modeling start.\n";
   double current_time = 0.;
@@ -56,15 +57,129 @@ void QueueingSystem::stepByStepModeling()
     calendar.push(new_event);
   }
 
-  while (!calendar.empty())
-  {
-    char c;
-    print_state();
-    nextEvent();
-    std::cin >> c;
-    if (c == 'x')
-      return;
-  }
+  //while (!calendar.empty())
+  //{
+  //  char c;
+  //  print_state();
+  //  nextEvent();
+  //  std::cin >> c;
+  //  if (c == 'x')
+  //    return;
+  //}
+}
+
+SystemState QueueingSystem::getState()
+{
+    SystemState result;
+
+    if (!calendar.empty())
+    {
+        result.event = calendar.top().type;
+        result.current_time = calendar.top().event_time;
+    }
+
+    for (size_t i = 0; i < sources.size(); ++i)
+        if (sources[i].getNext())
+            result.sources.push_back(sources[i].getNext()->creation_time);
+        else
+            result.sources.push_back(-1.);
+
+    for (size_t i = 0; i < handlers.size(); ++i)
+        if (handlers[i].isFree())
+            result.handlers.push_back({-1, -1.});
+        else
+            result.handlers.push_back({ handlers[i].getRequestInfo()->source->getSourceNmb(),  handlers[i].getRequestInfo()->end_time });
+
+    const std::vector<Request*> buffer_data = buffer.getData();
+    for (size_t i = 0; i < handlers.size(); ++i)
+        if (buffer_data[i])
+            result.buffer.push_back({ buffer_data[i]->source->getSourceNmb(), buffer_data[i]->creation_time });
+        else
+            result.buffer.push_back({ -1, -1. });
+
+    return result;
+}
+
+SystemResult QueueingSystem::getResult()
+{
+    SystemResult result;
+    result.buffer_size = buffer.size();
+
+    std::vector<size_t>requests_count(sources.size(), 0);
+    std::vector<size_t>rejects_count(sources.size(), 0);
+    std::vector<double>total_time(sources.size(), 0);
+    std::vector<double>processing_time(sources.size(), 0);
+
+    for (size_t i = 0; i < finished_requests.size(); ++i)
+    {
+        ++requests_count[finished_requests[i]->source->getSourceNmb()];
+        if (finished_requests[i]->status == Status_t::rejected)
+        {
+            ++rejects_count[finished_requests[i]->source->getSourceNmb()];
+            continue;
+        }
+        total_time[finished_requests[i]->source->getSourceNmb()] += finished_requests[i]->end_time - finished_requests[i]->creation_time;
+        processing_time[finished_requests[i]->source->getSourceNmb()] += finished_requests[i]->end_time - finished_requests[i]->start_time;
+    }
+
+    std::vector<double>processing_time_d(sources.size(), 0);
+    std::vector<double>buffer_time_d(sources.size(), 0);
+
+    for (const Request* req : finished_requests)
+    {
+        size_t j = req->source->getSourceNmb();
+        if (req->status != Status_t::completed)
+        {
+            continue;
+        }
+        double mean_proc = processing_time[j] / (requests_count[j] - rejects_count[j]);
+        double cur_proc = req->end_time - req->start_time;
+        processing_time_d[j] += std::pow(cur_proc - mean_proc, 2);
+
+        double mean_buff = (total_time[j] - processing_time[j]) / (requests_count[j] - rejects_count[j]);
+        double cur_buff = req->start_time - req->creation_time;
+        buffer_time_d[j] += std::pow(cur_buff - mean_buff, 2);
+    }
+
+
+    for (size_t i = 0; i < sources.size(); ++i)
+    {
+        SourceStats stats;
+        stats.total_requests = requests_count[i];
+        stats.probability_of_refusal = ((double)rejects_count[i]) / requests_count[i];
+        stats.mean_time_in_system = total_time[i] / (requests_count[i] - rejects_count[i]);
+        stats.mean_time_in_buffer = (total_time[i] - processing_time[i]) / (requests_count[i] - rejects_count[i]);
+        stats.mean_time_of_processing= processing_time[i] / (requests_count[i] - rejects_count[i]);
+        stats.dispersion_time_in_buffer = buffer_time_d[i] / requests_count[i];
+        stats.dispersion_processing_time= processing_time_d[i] / (requests_count[i] - rejects_count[i]);
+        result.sources.push_back(stats);
+    }
+
+    std::vector<double>start_time(handlers.size(), -1);
+    std::vector<double>end_time(handlers.size());
+    std::vector<double>total_time1(handlers.size());
+
+    for (const Request* req : finished_requests)
+    {
+        if (req->status != Status_t::completed)
+        {
+            continue;
+        }
+        size_t i = req->handler->getHandlerNmb();
+        if (start_time[i] == -1)
+        {
+            start_time[i] = req->start_time;
+        }
+        end_time[i] = req->end_time;
+        total_time1[i] += req->end_time - req->start_time;
+    }
+
+    for (size_t i = 0; i < handlers.size(); ++i)
+    {
+        result.handlers.push_back(total_time1[i] / (end_time[i] - start_time[i]));
+    }
+
+    return result;
 }
 
 void QueueingSystem::print_state()
