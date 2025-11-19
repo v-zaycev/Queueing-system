@@ -1,4 +1,6 @@
 .vs/
 x64/
-__pycache__/*
+__pycache__/
 *.pyc
+Queueing system/pybind_test.pyd
+application.py
