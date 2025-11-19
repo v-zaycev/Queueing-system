@@ -125,12 +125,32 @@ left=1.5cm, right=1.5cm, top=2cm, bottom=2cm, headsep=1cm, footskip=1cm]{geometr
 	\newpage
 	\tableofcontents
 	
-	\section*{\centering Постановка задачи}
+	\section{Постановка задачи}
+	
+	Целью курсовой работы является создание модели вычислительной системы (ВС) или ее части на некотором уровне детализации, описывающей и имитирующей ее структуру и функциональность.
+	
+	Каждый реальный объект (реальная ВС) обладает бесконечной сложностью, множеством характеристик, внутренних и внешних связей. Модель есть приближенное описание объекта с целью получения требуемых результатов с определенной точностью и достоверностью.
+	
+	При необходимости исследования поведенческих характеристик ВС в процессе исследования выгодно использовать не сам объект, а его модель. Степень приближения модели к описываемому объекту может быть различной и зависит от требований задачи.
+	
+	Существуют различные типы моделей:
+	\begin{itemize}
+		\item Аналитические (математические) модели
+		\item Аналоговые модели
+		\item Физические модели
+		\item Имитационные модели
+	\end{itemize}
+
+	Последний тип моделей является предметом нашего изучения.
+	
+	Одним из подходов к построению имитационной модели является построение ее в виде системы массового обслуживания (СМО), с характерной для СМО терминологией: источник, буфер, прибор, диспетчер, заявка (требование).
+	
+	\section{Исходные данные}
 	\begin{center}
 		\fontsize{18}{15}\selectfont
 		\textbf{Формализованная схема и описание СМО}
 		
-		\includegraphics[scale=0.5]{scheme.png}
+		\includegraphics[scale=0.5]{images/scheme.png}
 	\end{center}
 
 	\setlength\extrarowheight{3pt}
@@ -179,7 +199,6 @@ left=1.5cm, right=1.5cm, top=2cm, bottom=2cm, headsep=1cm, footskip=1cm]{geometr
 			\item Динамическое отражение результатов (пошаговый режим): 
 			\begin{itemize}
 				\item ОД2~--- формализованная схема модели, текущее состояние;
-				\item ИЗ1~--- пуассоновский закон распределения заявок;
 			\end{itemize}
 			\item Отражение	результатов	после сбора статистики (автоматический режим): 	 
 			\begin{itemize}
@@ -192,9 +211,57 @@ left=1.5cm, right=1.5cm, top=2cm, bottom=2cm, headsep=1cm, footskip=1cm]{geometr
 	\section{Пример временной диаграммы функционирования системы}
 	\begin{center}
 		
-		\includegraphics[width=\textwidth]{waveform.png}
+		\includegraphics[width=\textwidth]{images/waveform2.png}
+	\end{center}
+	
+	\section{Обобщённая блок-схема}
+	
+	\begin{center}
+		
+		\includegraphics[width=\textwidth]{images/common_scheme.png}
+	\end{center}
+	
+	\section{Модульная структура}
+	Разработка производилась в среде VisualStudio на языке С++ и среде VS Code на языке Python с использованием графической библиотеки Qt.
+	Приложение является объектно-ориентированным и содержит следующие классы: 
+	\begin{itemize}
+		\item Request~--- класс описывающий т пакет данных от датчика транспортного потока 
+		\item Event~--- класс описывающий тип события и время его наступления и заявку, с которой это событие связано
+		\item RequestSource~--- класс источника, который создаёт объекты заявок Request
+		\item Handler~---  прибора, который обрабатывает заявки Request
+		\item Buffer~--- класс буффера, хранящий некоторое число заявок Request
+		\item UniformGenerator~--- класс генератора случайных чисел с равномерным распределением и в интервале $\left[a,b\right]$
+		\item PoissonGenerator~--- класс генератора случайных чисел с экспоненциальным распределением с параметром $\lambda$
+		\item QueueingSystem — класс реализующий интерфейс взаимодействия источников, приборов и буфера, а также сбор статистики 
+		\item TimeDiagramPanel — визуализирует временные диаграммы работы системы 
+		\item SimulationGUI — предоставляет интерфейс управления системой мониторинга
+	\end{itemize}
+	
+	Примеры работы в пошаговом режиме
+	
+	\begin{center}
+		\includegraphics[width=\textwidth]{images/step0.png}
+	\end{center}
+	\begin{center}
+		\includegraphics[width=\textwidth]{images/step1.png}
+	\end{center}
+	\begin{center}
+		\includegraphics[width=\textwidth]{images/step2.png}
+	\end{center}
+	\begin{center}
+		\includegraphics[width=\textwidth]{images/step3.png}
+	\end{center}
+	
+	Примеры работы в автоматическом режиме
+	
+	\begin{center}
+		\includegraphics[width=\textwidth]{images/auto0.png}
 	\end{center}
 
+	\begin{center}
+		\includegraphics[width=\textwidth]{images/auto1.png}
+	\end{center}
+	
 	\section{Пример технической системы, удовлетворяющей формализованному описанию}
 	
 	\begin{table}[H]
@@ -211,7 +278,7 @@ left=1.5cm, right=1.5cm, top=2cm, bottom=2cm, headsep=1cm, footskip=1cm]{geometr
 			Дисциплина постановки на обслуживание&Выбирается первая свободная видеокарта.\\ \hline
 		\end{tabular}
 	\end{table}
-
+	
 	\section{Ограничения и требуемые характеристики}	
 	
 	Вероятность отказа должна составлять не более 10\%.\\ 
@@ -267,17 +334,17 @@ left=1.5cm, right=1.5cm, top=2cm, bottom=2cm, headsep=1cm, footskip=1cm]{geometr
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=\textwidth]{1650_usage.pdf}
+		\includegraphics[width=\textwidth]{images/1650_usage.pdf}
 	\end{figure}
 
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=\textwidth]{1650_rejection_rate.pdf}
+		\includegraphics[width=\textwidth]{images/1650_rejection_rate.pdf}
 	\end{figure}
 
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=\textwidth]{1650_total.pdf}
+		\includegraphics[width=\textwidth]{images/1650_total.pdf}
 	\end{figure}
 	
 	
@@ -291,17 +358,17 @@ left=1.5cm, right=1.5cm, top=2cm, bottom=2cm, headsep=1cm, footskip=1cm]{geometr
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=\textwidth]{3050_usage.pdf}
+		\includegraphics[width=\textwidth]{images/3050_usage.pdf}
 	\end{figure}
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=\textwidth]{3050_rejection_rate.pdf}
+		\includegraphics[width=\textwidth]{images/3050_rejection_rate.pdf}
 	\end{figure}
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=\textwidth]{3050_total.pdf}
+		\includegraphics[width=\textwidth]{images/3050_total.pdf}
 	\end{figure}
 	
 	\fontsize{18}{15}\selectfont
@@ -313,17 +380,17 @@ left=1.5cm, right=1.5cm, top=2cm, bottom=2cm, headsep=1cm, footskip=1cm]{geometr
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=\textwidth]{4080_usage.pdf}
+		\includegraphics[width=\textwidth]{images/4080_usage.pdf}
 	\end{figure}
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=\textwidth]{4080_rejection_rate.pdf}
+		\includegraphics[width=\textwidth]{images/4080_rejection_rate.pdf}
 	\end{figure}
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=\textwidth]{4080_total.pdf}
+		\includegraphics[width=\textwidth]{images/4080_total.pdf}
 	\end{figure}
 	
 	\fontsize{18}{15}\selectfont
@@ -334,19 +401,24 @@ left=1.5cm, right=1.5cm, top=2cm, bottom=2cm, headsep=1cm, footskip=1cm]{geometr
 		
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=\textwidth]{A400_usage.pdf}
+		\includegraphics[width=\textwidth]{images/A400_usage.pdf}
 	\end{figure}
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=\textwidth]{A400_rejection_rate.pdf}
+		\includegraphics[width=\textwidth]{images/A400_rejection_rate.pdf}
 	\end{figure}
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=\textwidth]{A400_total.pdf}
+		\includegraphics[width=\textwidth]{images/A400_total.pdf}
 	\end{figure}
 	
 	Таким образом мы получили несколько вариантов конфигурации удовлетворяющих ограничениям. Все подходящие конфигурации используют NVIDIA GeForce RTX 3050. Самой оптимальной из подходящих является вариант с 9 видеокартами и 5 местами в буфере, однако можно добавить ещё одну видеокарту или увеличить число мест в буфере до максимальных 25 чтобы ещё сильнее уменьшить вероятность отказа оставаясь в рамках необходимой загрузки. Остальные видеокарты в каждой конфигурации не могут удовлетворить хотя бы одному параметру. 
-
+	
+	\section{Вывод}
+	В ходе курсовой работы была написана имитационная модель системы массового обслуживания на языке C++, а также реализован графический интерфейс для неё на языке Python с использованием графической библиотеки Qt. С помощью данной программы была проанализирована реальная система видеонаблюдения и подобрана максимально выгодная комплектация системы, удовлетворяющая поставленным требованиям.
+	
+	\section{Список литературы}
+	
 \end{document}
