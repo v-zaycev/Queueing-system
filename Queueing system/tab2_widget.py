@@ -12,7 +12,7 @@ class Tab2Widget(QWidget):
         self.qs_params = None
         self.qs = None
         self.initUI()
-        self.fill_tables_with_examples()
+    #   self.fill_tables_with_examples()
     def initUI(self):
         layout = QVBoxLayout()
         
