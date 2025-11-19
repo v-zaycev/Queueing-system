@@ -1,0 +1,116 @@
+"""
+Type stubs for queueing_system C++ module
+"""
+
+from typing import Any, List, Tuple
+
+class Status_t:
+    created: Status_t
+    rejected: Status_t  
+    completed: Status_t
+
+class Event_t:
+    new_request: Event_t
+    freeing_handler: Event_t
+
+class Request:
+    def __init__(self) -> None: ...
+    creation_time: float
+    start_time: float
+    end_time: float
+    source: int
+    request_number: int
+    handler: int
+    status: Status_t
+
+class Event:
+    def __init__(self) -> None: ...
+    event_time: float
+    request: Request
+    type: Event_t
+    def __gt__(self, other: 'Event') -> bool: ...
+
+class PoissonGenerator:
+    def __init__(self, lambda_: float) -> None: ...
+    def __call__(self) -> float: ...
+
+class UniformGenerator:
+    def __init__(self, a: float, b: float) -> None: ...
+    def __call__(self) -> float: ...
+
+class Handler:
+    def __init__(self, generator: UniformGenerator) -> None: ...
+    def setNmb(self, handler_nmb: int) -> None: ...
+    def setRequest(self, request: Request, current_time: float) -> None: ...
+    def getHandlerNmb(self) -> int: ...
+    def getRequestInfo(self) -> Any: ...
+    def finishRequest(self) -> None: ...
+    def isFree(self) -> bool: ...
+
+class RequestSource:
+    def __init__(self, generator: PoissonGenerator) -> None: ...
+    def setName(self, source_nmb: int) -> None: ...
+    def getNext(self) -> Any: ...
+    def getSourceNmb(self) -> int: ...
+    def __call__(self) -> Any: ...
+
+class Buffer:
+    def __init__(self, buff_capacity: int) -> None: ...
+    def insert(self, request: Request) -> None: ...
+    def extract(self) -> Request: ...
+    def size(self) -> int: ...
+    def getData(self) -> List[Request]: ...
+
+class SystemParamsSetters:
+    sources_nmb: SystemParamsSetters
+    handlers_nmb: SystemParamsSetters
+    buffer_sz: SystemParamsSetters
+
+class SystemParams:
+    def __init__(self) -> None: ...
+    a: float
+    b: float
+    buffer_sz: int
+    handlers_nmb: int
+    lambda_: float  # type: ignore  # Игнорируем keyword warning
+    modelligng_time: float
+    sources_nmb: int
+    def set_param(self, param_type: SystemParamsSetters, value: Any) -> None: ...
+
+class SourceStats:
+    def __init__(self) -> None: ...
+    dispersion_processing_time: float
+    dispersion_time_in_buffer: float
+    mean_time_in_buffer: float
+    mean_time_in_system: float
+    mean_time_of_processing: float
+    probability_of_refusal: float
+    total_requests: int  # Исправлено с sources_nmb на total_requests
+
+class SystemState:
+    def __init__(self) -> None: ...
+    event: Event_t
+    current_time: float
+    buffer: List[Tuple[int, float]]  # (source_num, creation_time)
+    sources: List[float]  # next_event_time для каждого источника
+    handlers: List[Tuple[int, float]]  # (source_num, end_time) для занятых, (0, 0.0) для свободных
+
+
+class SystemResult:
+    def __init__(self) -> None: ...
+    sources: List[SourceStats]
+    handlers: List[float]  # Уточните тип если известно
+    buffer_size: int
+
+class QueueingSystem:
+    def __init__(self, params: SystemParams) -> None: ...
+    def init(self) -> Any: ...
+    def nextEvent(self) -> bool: ...
+    def autoModeling(self) -> Any: ...
+    def getState(self) -> SystemState: ...
+    def getResult(self) -> SystemResult: ...
+
+# Дополнительные типы для удобства
+SystemParamsSetters_t = SystemParamsSetters
+Status_t = Status_t  
+Event_t = Event_t

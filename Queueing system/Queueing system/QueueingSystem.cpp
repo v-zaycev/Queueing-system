@@ -91,7 +91,7 @@ SystemState QueueingSystem::getState()
             result.handlers.push_back({ handlers[i].getRequestInfo()->source->getSourceNmb(),  handlers[i].getRequestInfo()->end_time });
 
     const std::vector<Request*> buffer_data = buffer.getData();
-    for (size_t i = 0; i < handlers.size(); ++i)
+    for (size_t i = 0; i < buffer.size(); ++i)
         if (buffer_data[i])
             result.buffer.push_back({ buffer_data[i]->source->getSourceNmb(), buffer_data[i]->creation_time });
         else
