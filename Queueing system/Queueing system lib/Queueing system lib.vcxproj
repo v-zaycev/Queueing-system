@@ -125,12 +125,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);PYBIND11_EXPORT</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\VovaZ\AppData\Local\Programs\Python\Python313\include;C:\Users\VovaZ\AppData\Local\Programs\Python\Python313\Lib\site-packages\pybind11\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\vozon\AppData\Local\Programs\Python\Python313\include;C:\Users\vozon\AppData\Local\Programs\Python\Python313\Lib\site-packages\pybind11\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\VovaZ\AppData\Local\Programs\Python\Python313\libs</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\vozon\AppData\Local\Programs\Python\Python313\libs</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);python313.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

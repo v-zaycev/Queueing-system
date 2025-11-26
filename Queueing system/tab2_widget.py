@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import (
-    QWidget, 
+    QWidget, QMessageBox,
     QVBoxLayout, QHBoxLayout, QPushButton, QFormLayout,
     QLineEdit, QGroupBox,QTableWidgetItem, QTableWidget
 )
@@ -86,6 +86,30 @@ class Tab2Widget(QWidget):
         # Кнопка действия
         layout.addLayout(buttons_layout)
         
+        self.results_layout = QVBoxLayout()
+        self.results_widget = QWidget()
+        self.results_widget.setLayout(self.results_layout)
+        self.results_widget.setVisible(False)  # Сначала скрыт
+
+        # Создаем форму для отображения результатов
+        results_form = QFormLayout()
+        results_form.setLabelAlignment(Qt.AlignmentFlag.AlignRight)
+
+        self.avg_utilization_label = QLineEdit()
+        self.avg_utilization_label.setReadOnly(True)
+        self.avg_refusal_label = QLineEdit()
+        self.avg_refusal_label.setReadOnly(True)
+        self.total_requests_label = QLineEdit()
+        self.total_requests_label.setReadOnly(True)
+
+        results_form.addRow("Средняя загруженность:", self.avg_utilization_label)
+        results_form.addRow("Средняя вероятность отказа:", self.avg_refusal_label)
+        results_form.addRow("Общее число заявок:", self.total_requests_label)
+
+        self.results_layout.addLayout(results_form)
+        layout.addWidget(self.results_widget)
+
+
         # Таблицы статистики
         stats_layout = QHBoxLayout()
         
@@ -333,16 +357,8 @@ class Tab2Widget(QWidget):
 
     def on_reset_settings(self):
         """Сбросить настройки"""
-        self.sources_input.clear()
-        self.handlers_input.clear()
-        self.buffer_size_input.clear()
-        self.a_input.clear()
-        self.b_input.clear()
-        self.lambda_input.clear()
-        self.modeling_time_input.clear()
         self.reset_field_colors()
         self.start_btn.setEnabled(False)
-        self.step_btn.setEnabled(False)
         self.qs_params = None 
         del self.qs
         self.qs = None # Сбрасываем параметры
@@ -362,3 +378,20 @@ class Tab2Widget(QWidget):
         self.qs.autoModeling()
         self.update_sources_stats(self.qs.getResult())
         self.update_handlers_stats(self.qs.getResult())
+        self.update_results_summary(self.qs.getResult())
+        QMessageBox.information(None, "Info", "Автоматическое моделирование завершено.")
+
+    def update_results_summary(self, stats_data: queueing_system.SystemResult):
+        """Обновить сводку результатов"""
+        # Показываем виджет с результатами
+        self.results_widget.setVisible(True)
+        
+        # Вычисляем средние значения
+        avg_utilization = sum(stats_data.handlers) / len(stats_data.handlers) if stats_data.handlers else 0
+        avg_refusal = sum(source.probability_of_refusal for source in stats_data.sources) / len(stats_data.sources) if stats_data.sources else 0
+        total_requests = sum(source.total_requests for source in stats_data.sources)
+        
+        # Обновляем поля
+        self.avg_utilization_label.setText(f"{avg_utilization:.4f}")
+        self.avg_refusal_label.setText(f"{avg_refusal:.4f}")
+        self.total_requests_label.setText(f"{total_requests}")
